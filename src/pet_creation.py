@@ -1,11 +1,18 @@
 # CB 1st Pet Creating Functions
 
 import random
+from helper import *
+from saving_parsing import add_pet
 
 # class Pet:
     # create _init_ method
     # define attributes for the pet (happiness, hunger, level, age, stuff like that)
     # create other methods (play, feed, sleep, clean) for pet
+
+    # define function evaluate_health():
+        # health will be an average of hunger, happiness, and cleanliness
+        # health = (hunger + happiness + cleanliness) / 3
+        # return health
 
     # define function random_event():
         # generate a random number between 1 - 20
@@ -31,6 +38,7 @@ import random
 
     # define function sleep_pet(bed_quality,hunger,energy,happiness):
         # function that puts the pet to sleep (not killing it you sicko)
+        # run evaluate health function
         # pet sleeping will pass the day, reset energy to normal max, decrease hunger
         # different bed quality will give better stat resets, such as higher energy and better happiness
 
@@ -59,4 +67,53 @@ import random
     # get age of pet from user (keep in months)
     # make object of Pet using given values, set baselines for hunger, energy, and happiness
     # use vars() method to save the pet to the pet_accounts csv
+
+avaiable_species = ['Cat','Dog','Crocodile','Snek']
+
+class Pet:
+    def __init__(self,owner,name,species,age):
+        self.owner = owner
+        self.name = name
+        self.species = species
+        self.age = age
+        self.hunger = 80
+        self.happiness = 80
+        self.energy = 80
+        self.cleanliness = 80
+        self.health = 100
+        self.day = 1
+        self.time = 8
+        self.money = 50
+
+def create_pet(avaiable_species):
+    owner = input("What is your name?").strip()
+    pet = input("What is the name of your pet?").strip()
+
+    print("Avaiable Species")
+    for i in avaiable_species:
+        print(i)
+
+    while True:
+        species = input("What species is your pet?").strip().capitalize()
+        if species not in avaiable_species:
+            print("Please enter a valid answer.")
+            continue_screen()
+        else:
+            try:
+                age = input("What is the age of your pet (in months)?").strip()
+                age = int(age)
+            except:
+                print("Please enter a numerical value.")
+                continue_screen()
+            else:
+                try:
+                    pet_object = Pet(owner,pet,species,age)
+                except:
+                    print("Failed to create pet object")
+                else:
+                    print("Pet created succesfully!")
+                    add_pet(pet_object)
+                    return pet_object
+                
+create_pet(avaiable_species)
 
