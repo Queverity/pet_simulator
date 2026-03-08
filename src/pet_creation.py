@@ -84,6 +84,46 @@ class Pet:
         self.day = 1
         self.time = 8
         self.money = 50
+        self.level = 1
+        self.xp = 0
+
+    def evaluate_health(self):
+        self.health = (self.hunger + self.cleanliness + self.happiness) / 3
+
+    def check_level(self):
+        
+
+    def random_event(self):
+        event = random.randint(1,15)
+        if event % 2 != 0:
+            pass
+        else:
+            match event:
+                case 2:
+                    print(f"{self.name} found a stick! +10 happiness!")
+                    self.happiness += 10
+                case 4:
+                    print(f"{self.name} lost one of their toys. -10 happiness.")
+                    self.happiness -= 10
+                case 6:
+                    print(f"{self.name} has the zoomies! +10 energy!")
+                    self.energy += 10
+                case 8:
+                    print(f"{self.name} is unexpectedly tired. -10 energy.")
+                    self.energy -= 10
+                case 10:
+                    print(f"{self.name} somehow cleaned themselves. +10 cleanliness.")
+                    self.cleanliness += 10
+                case 12:
+                    print(f"{self.name} rolled around in a bunch of mud! -10 cleanliness.")
+
+    def pass_time(self,elapsed_time):
+        print("Time passes...")
+        self.time += elapsed_time
+        self.random_event()
+
+    def play_with_pet(self):
+        print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp)\n2. ")
 
 def create_pet(avaiable_species):
     owner = input("What is your name?").strip()
