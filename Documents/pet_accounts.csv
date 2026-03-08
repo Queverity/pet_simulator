@@ -1,1 +1,2 @@
-owner_name,pet_name,species,age,hunger,happiness,energy,cleanliness,health
+owner,name,species,age,hunger,happiness,energy,cleanliness,health,day,time
+Dave,Buddy,Dog,0,80,80,80,100,1,8

@@ -1,17 +1,25 @@
-class Student:
-    def __init__(self,name,grade,age):
+import csv
+
+class Pet:
+    def __init__(self,owner,name,species,age,hunger,energy,cleanliness,health):
+        self.owner = owner
         self.name = name
-        self.grade = grade
+        self.species = species
         self.age = age
+        self.hunger = hunger
+        self.energy = energy
+        self.cleanliness = cleanliness
+        self.health = health
 
-    def grade_up(self):
-        self.grade += 1
-        self.age += 1
+    
+pet = Pet("Dave","Buddy","Dog",0,80,80,80,100)
 
-student_one = Student("Dave",5,11)
+for k,v in vars(pet).items():
+    print(f"{k.capitalize()}: {v}")
 
-print(f"Grade: {student_one.grade}th | Age: {student_one.age}")
+with open("Documents//pet_accounts.csv",mode="a",newline="") as pets:
+    fieldnames = ['owner','name','species','age','hunger','energy','cleanliness','health']
 
-student_one.grade_up()
+    writer = csv.DictWriter(pets,fieldnames)
 
-print(f"Grade: {student_one.grade}th | Age: {student_one.age}")
+    writer.writerow(vars(pet))
