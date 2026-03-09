@@ -91,7 +91,21 @@ class Pet:
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
 
     def check_level(self):
-        
+        if self.xp % 100 == 0:
+            self.level = (self.xp / 100) + 1
+
+        else:
+            level = 1
+            while True:
+                xp = self.xp
+                if xp > 100:
+                    xp - 100
+                    level += 1
+                else:
+                    break
+            
+            self.level = level
+
 
     def random_event(self):
         event = random.randint(1,15)
