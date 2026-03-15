@@ -91,8 +91,13 @@ class Pet:
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
 
     def check_level(self):
+
+        current_level = self.level
+
         if self.xp % 100 == 0:
             self.level = (self.xp / 100) + 1
+            if self.level > current_level:
+                print(f"{self.name} gained a level! They are now level {self.level}.")
 
         else:
             level = 1
@@ -137,7 +142,45 @@ class Pet:
         self.random_event()
 
     def play_with_pet(self):
-        print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp)\n2. ")
+        if self.energy == 0:
+            print("Pet is out of energy! Have them sleep to reset energy.")
+            return
+        else:
+            while True:
+                print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp, -10 Energy)\n2. Go to a fancy pet park and run around (but fancily) ($10, +20 Happiness, + 10 xp, -15 Energy)\n3. Go to like the fanciest pet park ever ($20, +25 Happiness, + 15 xp, -20 Energy)")
+                choice = input("Enter 1, 2, or 3:\n").strip()
+
+                match choice:
+                    case "1":
+                        print(f"You went to a park and ran around with {self.name}!")
+                        self.happiness += 10
+                        self.xp += 5
+                        self.energy -= 10
+                    case "2":
+                        if self.money < 10:
+                            print("You don't have enough money for that.")
+                            continue
+                        print(f"You went to a fancy pet park and ran around with {self.name}!")
+                        self.happiness += 20
+                        self.xp += 10
+                        self.money -= 10
+                        self.energy -= 15
+                    case "3":
+                        if self.money < 20:
+                            print("You don't have enough money for that.")
+                        print(f"You went to the fanciest pet park and ran around with {self.name}!")
+                        self.happiness += 25
+                        self.xp += 15
+                        self.money -= 20
+                        self.energy -= 20
+
+    def clean_pet(self):
+        print("Bro I don't want to do this")
+
+
+
+
+
 
 def create_pet(avaiable_species):
     owner = input("What is your name?").strip()

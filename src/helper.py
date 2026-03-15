@@ -31,3 +31,11 @@ def print_slow(text):
 def continue_screen():
     print_slow("Press Enter to continue.")
     input()
+
+def max_checker(value):
+    if value > 100:
+        value = 100
+    else:
+        pass
+
+    return value
