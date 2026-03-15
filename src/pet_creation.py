@@ -102,6 +102,8 @@ class Pet:
 
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
+        print(f"Pet Health: {self.health}")
+        after_action()
 
     def choose_skill(self):
 
@@ -124,15 +126,16 @@ class Pet:
                 match skill_choice:
                     case "1":
                         self.agility += 1
-                        return
+                        break
                     case "2":
                         self.obedience += 1
-                        return
+                        break
                     case "3":
                         self.tracking += 1
-                        return
+                        break
                     case _:
                         print("Please enter 1, 2, or 3.")
+                        after_action()
                         continue
         else:
             while True:
@@ -147,35 +150,26 @@ class Pet:
                             continue
                         else:
                             self.agility = 1
-                            return
+                            break
                     case "2":
                         if self.obedience >= 1:
                             print("Your pet already has that skill.")
                             continue
                         else:
                             self.obedience = 1
-                            return
+                            break
                     case "3":
                         if self.tracking >= 1:
                             print("Your pet already has that skill.")
                             continue
                         else:
                             self.tracking = 1
-                            return
+                            break
                     case _:
                         print("Please enter 1, 2, or 3.")
                         continue
+            after_action()
 
-
-        
-
-        
-
-            
-
-
-
-        
 
     def check_level(self):
 
@@ -203,7 +197,6 @@ class Pet:
             
             self.level = level
 
-
     def random_event(self):
         event = random.randint(1,15)
         if event % 2 != 0:
@@ -228,14 +221,28 @@ class Pet:
                 case 12:
                     print(f"{self.name} rolled around in a bunch of mud! -10 cleanliness.")
 
-    def pass_time(self,elapsed_time):
+            after_action()
+
+    def pass_time(self,elapsed_time,mode):
         print("Time passes...")
+        
         self.time += elapsed_time
+
+        # Hunger goes down by 5 every hour.
+        if mode == True:
+            while elapsed_time > 0:
+                print("-5 Hunger per hour")
+                hunger -= 5
+                elapsed_time -= 1
+
+        after_action()
+
         self.random_event()
 
     def play_with_pet(self):
         if self.energy == 0:
             print("Your pet is out of energy! Have them sleep to reset energy.")
+            after_action()
             return
         else:
             while True:
@@ -251,11 +258,12 @@ class Pet:
 
                         self.happiness = max_min_checker(self.happiness)
                         self.energy = max_min_checker(self.energy)
-
-                        return
+                        break
+                        
                     case "2":
                         if self.money < 10:
                             print("You don't have enough money for that.")
+                            after_action()
                             continue
                         print(f"You went to a fancy pet park and ran around with {self.name}!")
                         self.happiness += 20
@@ -265,11 +273,12 @@ class Pet:
 
                         self.happiness = max_min_checker(self.happiness)
                         self.energy = max_min_checker(self.energy)
-
-                        return
+                        break
+                        
                     case "3":
                         if self.money < 20:
                             print("You don't have enough money for that.")
+                            after_action()
                         print(f"You went to the fanciest pet park and ran around with {self.name}!")
                         self.happiness += 25
                         self.xp += 15
@@ -278,15 +287,20 @@ class Pet:
 
                         self.happiness = max_min_checker(self.happiness)
                         self.energy = max_min_checker(self.energy)
-
-                        return
+                        break
+                       
                     case _:
                         print("Please enter 1, 2, or 3.")
+                        after_action()
                         continue
+            
+            after_action()
+
 
     def clean_pet(self):
         if self.energy == 0:
             print("Your pet is out of energy! Have them sleep to reset energy.")
+            after_action()
         else:
             while True:
                 print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -10 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -15 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -20 Energy)")
@@ -301,10 +315,11 @@ class Pet:
                         self.cleanliness = max_min_checker(self.cleanliness)
                         self.energy = max_min_checker(self.energy)
 
-                        return
+                        break
                     case "2":
                         if self.money < 10:
                             print("You don't have enough money for this.")
+                            after_action()
                             continue
                         print("You went to a basic groomer to get your pet trimmed and cleaned.")
                         self.cleanliness += 30
@@ -314,10 +329,11 @@ class Pet:
                         self.cleanliness = max_min_checker(self.cleanliness)
                         self.energy = max_min_checker(self.energy)
 
-                        return
+                        break
                     case "3":
                         if self.money < 20:
                             print("You don't have enough money for this.")
+                            after_action()
                             continue
                         print("You went to a professional groomer to get your pet trimmed and cleaned.")
                         self.cleanliness = 100
@@ -327,11 +343,74 @@ class Pet:
                         self.cleanliness = max_min_checker(self.cleanliness)
                         self.energy = max_min_checker(self.energy)
 
-                        return
+                        break
                     case _:
                         print("Please enter 1, 2, or 3.")
+                        after_action()
                         continue
 
+            after_action()
+
+    def feed_pet(self):
+        print("How would you like to feed your pet?\n1. Basic Kibble (Free, +10 Hunger, +5 Happiness, -5 Energy)\n2. Treat ($2, +15 Happiness, +5 Hunger, -5 Energy)\n3. Fancy Food ($5, +10 Happiness, +15 Hunger, -5 Energy)\n4. Home Made Meal ($10, +15 Happiness, +20 Hunger, -5 Energy)")
+        while True:
+            choice = input("Please enter 1, 2, 3, or 4:\n").strip()
+
+        
+            match choice:
+                case "1":
+                    print("You fed your pet basic kibble!")
+                    self.hunger += 10
+                    self.happiness += 5
+                    self.energy -= 5
+                    break
+                case "2":
+                    if self.money < 2:
+                        print("You don't have enough money for that.")
+                        after_action()
+                        continue
+                    
+                    print("You gave your pet a treat!")
+                    self.happiness += 15
+                    self.hunger += 5
+                    self.energy -= 5
+                    break
+
+                case "3":
+                    if self.money < 5:
+                        print("You don't have enough money for that.")
+                        after_action()
+                        continue
+                    
+                    print("You fed your pet fancy kibble!")
+                    self.happiness += 10
+                    self.hunger += 15
+                    self.energy -= 5
+                    break
+
+                case "4":
+                    if self.money < 10:
+                        print("You don't have enough money for that.")
+                        after_action()
+                        continue
+                        
+                    print("You fed your pet a home made meal!")
+                    self.happiness += 15
+                    self.hunger += 20
+                    self.energy -= 5
+                    break
+        after_action()
+        return
+
+    def train_pet(self):
+        pass
+
+    def sleep_pet(self):
+        print("Your pet has gone to bed.")
+        self.energy = 100
+        self.hunger -= 30
+        self.happiness += 5
+        
 
 
 
@@ -362,6 +441,7 @@ def create_pet(avaiable_species):
                     print("Failed to create pet object")
                 else:
                     print("Pet created succesfully!")
+                    after_action()
                     add_pet(pet_object)
                     return pet_object
                 

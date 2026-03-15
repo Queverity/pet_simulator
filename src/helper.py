@@ -17,20 +17,13 @@ import time
 def clear_screen():
     print("\033c", end="")
 
-def print_slow(text):
-
-    for letter in text:
-        sys.stdout.write(letter)
-        sys.stdout.flush()
-        time.sleep(0.05)
-
-    print()
-
-
-
 def continue_screen():
-    print_slow("Press Enter to continue.")
+    print("Press Enter to continue.")
     input()
+
+def after_action():
+    continue_screen()
+    clear_screen()
 
 def max_min_checker(value):
     if value > 100:
