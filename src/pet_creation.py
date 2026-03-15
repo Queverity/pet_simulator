@@ -70,25 +70,112 @@ from saving_parsing import add_pet
 
 avaiable_species = ['Cat','Dog','Crocodile','Snek']
 
+
+
 class Pet:
     def __init__(self,owner,name,species,age):
+
+        # pet attributes
         self.owner = owner
         self.name = name
         self.species = species
         self.age = age
+
+        # pet stats
         self.hunger = 80
         self.happiness = 80
         self.energy = 80
         self.cleanliness = 80
         self.health = 100
+
+        # data more prevalent to the owner
         self.day = 1
         self.time = 8
-        self.money = 50
+        self.money = 500
         self.level = 1
         self.xp = 0
 
+        # skills the pet can have
+        self.agility = 0
+        self.obedience = 0
+        self.tracking = 0
+
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
+
+    def choose_skill(self):
+
+        available_skills = []
+
+        if self.agility == 0:
+            available_skills.append('agility')
+
+        if self.obedience == 0:
+            available_skills.append('obedience')
+
+        if self.tracking == 0:
+            available_skills.append('tracking')
+
+        if bool(available_skills) == False:
+            while True:
+                print("Your pet has gained all skills avaiable. Choose a skill to gain one free level in.")
+                skill_choice = input("1. Agility\n2. Obedience\n3. Tracking\nEnter Number:\n").strip()
+
+                match skill_choice:
+                    case "1":
+                        self.agility += 1
+                        return
+                    case "2":
+                        self.obedience += 1
+                        return
+                    case "3":
+                        self.tracking += 1
+                        return
+                    case _:
+                        print("Please enter 1, 2, or 3.")
+                        continue
+        else:
+            while True:
+                print("Since your pet has gained a level, they can gain a new skill. Pick which skill you want your pet to gain.")
+
+                skill_choice = input("1. Agility\n2. Obedience\n3. Tracking\nEnter Number:\n").strip()
+
+                match skill_choice:
+                    case "1":
+                        if self.agilty >= 1:
+                            print("Your pet already has that skill.")
+                            continue
+                        else:
+                            self.agility = 1
+                            return
+                    case "2":
+                        if self.obedience >= 1:
+                            print("Your pet already has that skill.")
+                            continue
+                        else:
+                            self.obedience = 1
+                            return
+                    case "3":
+                        if self.tracking >= 1:
+                            print("Your pet already has that skill.")
+                            continue
+                        else:
+                            self.tracking = 1
+                            return
+                    case _:
+                        print("Please enter 1, 2, or 3.")
+                        continue
+
+
+        
+
+        
+
+            
+
+
+
+        
 
     def check_level(self):
 
@@ -97,7 +184,12 @@ class Pet:
         if self.xp % 100 == 0:
             self.level = (self.xp / 100) + 1
             if self.level > current_level:
-                print(f"{self.name} gained a level! They are now level {self.level}.")
+                while self.level != current_level:
+                    print(f"{self.name} gained a level! They are now level {self.level}.")
+                    current_level += 1
+                    self.choose_skill
+
+
 
         else:
             level = 1
@@ -143,7 +235,7 @@ class Pet:
 
     def play_with_pet(self):
         if self.energy == 0:
-            print("Pet is out of energy! Have them sleep to reset energy.")
+            print("Your pet is out of energy! Have them sleep to reset energy.")
             return
         else:
             while True:
@@ -156,6 +248,11 @@ class Pet:
                         self.happiness += 10
                         self.xp += 5
                         self.energy -= 10
+
+                        self.happiness = max_min_checker(self.happiness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
                     case "2":
                         if self.money < 10:
                             print("You don't have enough money for that.")
@@ -165,6 +262,11 @@ class Pet:
                         self.xp += 10
                         self.money -= 10
                         self.energy -= 15
+
+                        self.happiness = max_min_checker(self.happiness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
                     case "3":
                         if self.money < 20:
                             print("You don't have enough money for that.")
@@ -174,10 +276,61 @@ class Pet:
                         self.money -= 20
                         self.energy -= 20
 
+                        self.happiness = max_min_checker(self.happiness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
+                    case _:
+                        print("Please enter 1, 2, or 3.")
+                        continue
+
     def clean_pet(self):
-        print("Bro I don't want to do this")
+        if self.energy == 0:
+            print("Your pet is out of energy! Have them sleep to reset energy.")
+        else:
+            while True:
+                print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -10 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -15 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -20 Energy)")
+                choice = input("Enter 1, 2, or 3:\n").strip()
 
+                match choice:
+                    case "1":
+                        print("You gave your pet an at-home bath.")
+                        self.cleanliness += 15
+                        self.energy -= 10
 
+                        self.cleanliness = max_min_checker(self.cleanliness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
+                    case "2":
+                        if self.money < 10:
+                            print("You don't have enough money for this.")
+                            continue
+                        print("You went to a basic groomer to get your pet trimmed and cleaned.")
+                        self.cleanliness += 30
+                        self.energy -= 15
+                        self.money -= 10
+
+                        self.cleanliness = max_min_checker(self.cleanliness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
+                    case "3":
+                        if self.money < 20:
+                            print("You don't have enough money for this.")
+                            continue
+                        print("You went to a professional groomer to get your pet trimmed and cleaned.")
+                        self.cleanliness = 100
+                        self.energy -= 20
+                        self.money -= 20
+
+                        self.cleanliness = max_min_checker(self.cleanliness)
+                        self.energy = max_min_checker(self.energy)
+
+                        return
+                    case _:
+                        print("Please enter 1, 2, or 3.")
+                        continue
 
 
 

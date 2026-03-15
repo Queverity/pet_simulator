@@ -32,9 +32,11 @@ def continue_screen():
     print_slow("Press Enter to continue.")
     input()
 
-def max_checker(value):
+def max_min_checker(value):
     if value > 100:
         value = 100
+    elif value < 0:
+        value = 0
     else:
         pass
 
