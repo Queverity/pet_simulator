@@ -495,6 +495,9 @@ class Pet:
         self.energy = 100
         self.hunger -= 30
         self.happiness += 5
+
+        self.time = 8
+        self.day += 1
         # make sure to use pass time after this
 
     def view_pet(self):
