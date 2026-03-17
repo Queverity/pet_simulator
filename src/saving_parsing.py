@@ -58,3 +58,7 @@ def add_pet(new_pet):
         writer = csv.DictWriter(pets,fieldnames)
 
         writer.writerow(vars(new_pet))
+
+def remove_pet(pet_name):
+    pass
+

@@ -102,6 +102,15 @@ class Pet:
 
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
+        if self.hunger < 25:
+            self.health -= 20
+
+        if self.cleanliness < 25:
+            self.health - 10
+
+        if self.happiness < 25:
+            self.health - 5
+            
         print(f"Pet Health: {self.health}")
         after_action()
 
@@ -170,6 +179,12 @@ class Pet:
                         continue
             after_action()
 
+    def evaluate_age(self):
+        age = self.day / 30
+
+        age = round(age,2)
+
+        self.age = age
 
     def check_level(self):
 
@@ -239,6 +254,13 @@ class Pet:
 
         self.random_event()
 
+    def check_time(self):
+        if self.time >= 22:
+            print("It's too late in the day. Have your pet go to sleep to move on to the next day.")
+            return False
+        else:
+            return True
+
     def play_with_pet(self):
         if self.energy == 0:
             print("Your pet is out of energy! Have them sleep to reset energy.")
@@ -295,7 +317,6 @@ class Pet:
                         continue
             
             after_action()
-
 
     def clean_pet(self):
         if self.energy == 0:
@@ -410,6 +431,11 @@ class Pet:
         self.energy = 100
         self.hunger -= 30
         self.happiness += 5
+
+        self.time = 8
+        self.day += 1
+
+
         
 
 
