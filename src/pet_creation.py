@@ -100,6 +100,11 @@ class Pet:
         self.obedience = 0
         self.tracking = 0
 
+        # variables for tracking progress in training a skill
+        self.agility_progress = 0
+        self.obedience_progress = 0
+        self.tracking_progress = 0
+
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
         if self.hunger < 25:
@@ -424,18 +429,91 @@ class Pet:
         return
 
     def train_pet(self):
-        pass
+        while True:
+            print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}")
+
+            choice = input("Enter number:\n").strip()
+
+            match choice:
+                case '1':
+                    if self.agility == 0:
+                        print("You have not yet obtained that skill.")
+                        after_action()
+                        continue
+
+                    print("You spent two hours training your pet in agility. You have gained progress towards the next level.")
+
+                    self.agility_progress += 1
+
+                    if self.agility_progress == 3:
+                        print("Your pet gained a level in Agility!")
+                        self.agility += 1
+                        self.agility_progress == 0
+
+                    break
+                case '2':
+                    if self.obedience == 0:
+                        print("You have not yet obtained that skill.")
+                        after_action()
+                        continue
+                    
+                    print("You spent two hours training your pet in obedience. You have gained progress towards the next level.")
+
+                    self.obedience_progress += 1
+
+                    if self.obedience_progress == 3:
+                        print("Your pet gained a level in Obedience!")
+                        self.obedience += 1
+                        self.obedience_progress == 0
+
+                    break
+                case '3':
+                    if self.tracking == 0:
+                        print("You have not yet obtained that skill.")
+                        after_action()
+                        continue
+                    
+                    print("You spent two hours training your pet in tracking. You have gained progress towards the next level.")
+
+                    self.tracking_progress += 1
+
+                    if self.tracking_progress == 3:
+                        print("Your pet gained a level in Tracking!")
+                        self.tracking += 1
+                        self.tracking_progress == 0
+
+                    break
+                case _:
+                    print("Please enter 1, 2, or 3.")
+                    after_action()
+                    continue
+
+        after_action()
 
     def sleep_pet(self):
         print("Your pet has gone to bed.")
         self.energy = 100
         self.hunger -= 30
         self.happiness += 5
+        # make sure to use pass time after this
 
-        self.time = 8
-        self.day += 1
+    def view_pet(self):
+        while True:
+            print("What information about your pet would you like to view?\n1. Basic Info (Name, Age, Species)\n2. Attributes\n3. Save File Attribtues\n4. Skills")
 
+            choice = input("Enter number:\n").strip()
 
+            match choice:
+                case '1':
+                    print(f"Owner Name: {self.owner}\nName: {self.name}\nAge (months): {self.age}\nSpecies: {self.species}")
+                case '2':
+                    pass
+                case '3':
+                    pass
+                case '4':
+                    pass
+                case _:
+                    print("Please enter 1, 2, 3, or 4.")
         
 
 
