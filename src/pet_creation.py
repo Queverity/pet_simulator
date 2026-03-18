@@ -105,6 +105,12 @@ class Pet:
         self.obedience_progress = 0
         self.tracking_progress = 0
 
+        # inventory items that give boosts
+        self.bed = 1 # improves hunger decrease and happiness after sleep
+        self.toy = 1 # improves happiness gain and maybe xp after play
+        self.food = 1 # improves hunger and happiness gain after eating
+        self.brush = 1 # improves cleanliness gain after washing
+
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
         if self.hunger < 25:
@@ -115,9 +121,6 @@ class Pet:
 
         if self.happiness < 25:
             self.health - 5
-            
-        print(f"Pet Health: {self.health}")
-        after_action()
 
     def choose_skill(self):
 
@@ -265,6 +268,59 @@ class Pet:
             return False
         else:
             return True
+
+    def shop(self):
+        print("Welcome to the pet shop! Here, you can purchase upgrades for specific items your pet uses.")
+
+        while True:
+            print(f"You can get upgrades for your pet's bed, toys, food, and brush. Available Purchases:\nTier {self.bed  + 1} Bed, ${(self.bed + 1) * 50}\nTier {self.toy + 1} Toys, ${(self.toy + 1) * 50}\nTier {self.food  + 1} Foods, ${(self.food + 1) * 50}\nTier {self.brush + 1} Brush, ${(self.brush + 1) * 30}")
+
+            purchase = input("1. Purchase Bed\n2. Purchase Toys\n3. Purchase Foods\n4. Purchase Brush\n5. Explain Boosts\n6. Exit").strip()
+
+            match purchase:
+                case "1":
+                    if self.money < (self.bed + 1) * 50:
+                        print("You don't have enough money for that.")
+
+                    print("You have upgraded your pet's bed!")
+                    self.bed += 1
+                    self.money -= (self.bed + 1) * 50
+                    break
+                case "2":
+                    if self.money < (self.toy + 1) * 50:
+                        print("You don't have enough money for that.")
+
+                    print("You have upgraded your pet's toys!")
+                    self.toy += 1
+                    self.money -= (self.toy + 1) * 50
+                    break
+                case '3':
+                    if self.money < (self.food + 1) * 50:
+                        print("You don't have enough money for that.")
+
+                    print("You have upgraded your pet's foods!")
+                    self.food += 1
+                    self.money -= (self.food + 1) * 50
+                    break
+                case '4':
+                    if self.money < (self.toy + 1) * 50:
+                        print("You don't have enough money for that.")
+
+                    print("You have upgraded your pet's brush!")
+                    self.brush += 1
+                    self.money -= (self.brush + 1) * 50
+                    break
+                case '5':
+                    print("Beds improve hunger loss and happiness gain after sleeping. Toys improve happiness and xp gain after play. Foods improve hunger and happiness after eating. Brushes improve cleanliness gain and happiness loss after washing.")
+                    continue
+                case '6':
+                    return
+                case _:
+                    print("Please enter 1, 2, 3, 4, 5, or 6.")
+                    continue
+
+        after_action()
+        return
 
     def play_with_pet(self):
         if self.energy == 0:
@@ -493,16 +549,20 @@ class Pet:
     def sleep_pet(self):
         print("Your pet has gone to bed.")
         self.energy = 100
-        self.hunger -= 30
-        self.happiness += 5
+        self.hunger -= (30 - self.bed * 3)
+        self.happiness += (5 + self.bed * 2)
 
         self.time = 8
         self.day += 1
+
+        self.evaluate_health()
+        self.money += 50
+        
         # make sure to use pass time after this
 
     def view_pet(self):
         while True:
-            print("What information about your pet would you like to view?\n1. Basic Info (Name, Age, Species)\n2. Attributes\n3. Save File Attribtues\n4. Skills")
+            print("What information about your pet would you like to view?\n1. Basic Info (Name, Age, Species)\n2. Attributes\n3. Save File Attribtues\n4. Skills\n5. Inventory\n6. Exit")
 
             choice = input("Enter number:\n").strip()
 
@@ -515,11 +575,12 @@ class Pet:
                     pass
                 case '4':
                     pass
+                case '5':
+                    pass
+                case '6':
+                    return
                 case _:
-                    print("Please enter 1, 2, 3, or 4.")
-        
-
-
+                    print("Please enter 1, 2, 3, 4, 5, or 6.")
 
 def create_pet(avaiable_species):
     owner = input("What is your name?").strip()

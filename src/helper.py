@@ -1,8 +1,5 @@
 # CB 1st Helper Functions
 
-import sys
-import time
-
 # function clear_screen():
     # print function to clear the screen, take this from another project
 

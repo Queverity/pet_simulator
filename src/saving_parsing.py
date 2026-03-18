@@ -4,7 +4,7 @@ import csv
 
 def parse_accounts():
     with open("Documents//pet_accounts.csv",mode="r",newline="") as pets:
-        fieldnames = ['owner','name','species','age','hunger','energy','cleanliness','health','day','time','money','agility','obedience','tracking']
+        fieldnames = ['owner','name','species','age','hunger','energy','cleanliness','health','day','time','money','agility','obedience','tracking','agility_progress','obedience_progress','tracking_progress','bed','toy','food','brush']
         reader = csv.DictReader(pets,fieldnames)
 
         pet_accounts = []
@@ -13,23 +13,6 @@ def parse_accounts():
             pet_accounts.append(i)
 
         return pet_accounts
-
-def parse_inventories():
-    with open("Documents//pet_inventories.csv",mode="r",newline="") as skills:
-        fieldnames = ['name','toy','bed']
-        reader = csv.DictReader(skills,fieldnames)
-
-        pet_inventories = []
-
-        for i in reader:
-            pet_inventories.append(i)
-
-        return pet_inventories
-
-
-
-
-
 
 
 def save_accounts(pet_accounts):
@@ -40,16 +23,6 @@ def save_accounts(pet_accounts):
         writer.writerow(fieldnames)
 
         for i in pet_accounts:
-            writer.writerow(i)
-
-def save_inventories(pet_inventories):
-    with open("Documents//pet_inventories.csv",mode="w",newline="") as inventories:
-        fieldnames = ['name','toy','bed']
-        writer = csv.DictWriter(inventories,fieldnames)
-
-        writer.writerow(fieldnames)
-
-        for i in pet_inventories:
             writer.writerow(i)
 
 def add_pet(new_pet):

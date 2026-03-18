@@ -16,7 +16,7 @@ def pet_interaction(pet_object):
     pass
 
 def main_menu():
-
+    pet_accounts = parse_accounts()
 
     print("This is a pet simulator game! In it, you can take care of a pet by keeping track of their attributes, such as hunger, happiness, and cleanliness. Current work in progress features are a shop, skill competitions, and possibly pet breeding.")
 
