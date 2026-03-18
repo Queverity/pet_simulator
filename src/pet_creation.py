@@ -73,7 +73,7 @@ avaiable_species = ['Cat','Dog','Crocodile','Snek']
 
 
 class Pet:
-    def __init__(self,owner,name,species,age):
+    def __init__(self,owner,name,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush):
 
         # pet attributes
         self.owner = owner
@@ -82,34 +82,34 @@ class Pet:
         self.age = age
 
         # pet stats
-        self.hunger = 80
-        self.happiness = 80
-        self.energy = 80
-        self.cleanliness = 80
-        self.health = 100
+        self.hunger = hunger
+        self.happiness = happiness
+        self.energy = energy
+        self.cleanliness = cleanliness
+        self.health = health
 
         # data more prevalent to the owner
-        self.day = 1
-        self.time = 8
-        self.money = 500
-        self.level = 1
-        self.xp = 0
+        self.day = day
+        self.time = time
+        self.money = money
+        self.level = level
+        self.xp = xp
 
         # skills the pet can have
-        self.agility = 0
-        self.obedience = 0
-        self.tracking = 0
+        self.agility = agility
+        self.obedience = obedience
+        self.tracking = tracking
 
         # variables for tracking progress in training a skill
-        self.agility_progress = 0
-        self.obedience_progress = 0
-        self.tracking_progress = 0
+        self.agility_progress = agility_progress
+        self.obedience_progress = obedience_progress
+        self.tracking_progress = tracking_progress
 
         # inventory items that give boosts
-        self.bed = 1 # improves hunger decrease and happiness after sleep
-        self.toy = 1 # improves happiness gain and maybe xp after play
-        self.food = 1 # improves hunger and happiness gain after eating
-        self.brush = 1 # improves cleanliness gain after washing
+        self.bed = bed # improves hunger decrease and happiness after sleep
+        self.toy = toy # improves happiness gain and maybe xp after play
+        self.food = food # improves hunger and happiness gain after eating
+        self.brush = brush # improves cleanliness gain after washing
 
     def evaluate_health(self):
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
@@ -590,14 +590,22 @@ class Pet:
                     print(f"Money: {self.money}\nPet XP: {self.xp}\nPet Level: {self.level}")
                 case '4':
                     print("Note: If a skill is Level 0, you have not yet obtained it.")
-                    print("")
+                    print(f"Agility: Level {self.agility}\nObedience: Level {self.obedience}\nTracking: Level {self.tracking}")
                 case '5':
-                    pass
+                    print(f"Bed: Tier {self.bed}\nToy: Tier {self.toy}\nFoods: Tier {self.food}\nBrush: Tier {self.brush}")
                 case '6':
                     return
                 case _:
                     print("Please enter 1, 2, 3, 4, 5, or 6.")
                     after_action()
+
+            print("Would you like to continue viewing your pet's statisitics?")
+            choice = ("Y/N:\n").strip().capitalize()
+
+            if choice != "Y":
+                return
+            else:
+                continue
 
             
 
@@ -623,7 +631,36 @@ def create_pet(avaiable_species):
                 continue_screen()
             else:
                 try:
-                    pet_object = Pet(owner,pet,species,age)
+                    # pet stats
+                    hunger = 80
+                    happiness = 80
+                    energy = 80
+                    cleanliness = 80
+                    health = 100
+
+                    # data more prevalent to the owner
+                    day = 1
+                    time = 8
+                    money = 500
+                    level = 1
+                    xp = 0
+
+                    # skills the pet can have
+                    agility = 0
+                    obedience = 0
+                    tracking = 0
+
+                    # variables for tracking progress in training a skill
+                    agility_progress = 0
+                    obedience_progress = 0
+                    tracking_progress = 0
+
+                    # inventory items that give boosts
+                    bed = 1 # improves hunger decrease and happiness after sleep
+                    toy = 1 # improves happiness gain and maybe xp after play
+                    food = 1 # improves hunger and happiness gain after eating
+                    brush = 1 # improves cleanliness gain after washing
+                    pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
                 except:
                     print("Failed to create pet object")
                 else:
@@ -632,7 +669,48 @@ def create_pet(avaiable_species):
                     add_pet(pet_object)
                     return pet_object
 
-def load_pet():
-    pass            
+def load_pet(pet_account):
+    # save file info
+    owner = pet_account[0]
+    pet = pet_account[1]
+    species = pet_account[2]
+    age = pet_account[3]
+
+    # pet stats
+    hunger = pet_account[4]
+    happiness = pet_account[5]
+    energy = pet_account[6]
+    cleanliness = pet_account[7]
+    health = pet_account[8]
+
+    # data more prevalent to the owner
+    day = pet_account[9]
+    time = pet_account[10]
+    money = pet_account[11]
+    level = pet_account[12]
+    xp = pet_account[13]
+
+    # skills the pet can have
+    agility = pet_account[14]
+    obedience = pet_account[15]
+    tracking = pet_account[16]
+
+    # variables for tracking progress in training a skill
+    agility_progress = pet_account[17]
+    obedience_progress = pet_account[18]
+    tracking_progress = pet_account[19]
+
+    # inventory items that give boosts
+    bed = pet_account[20] # improves hunger decrease and happiness after sleep
+    toy = pet_account[21] # improves happiness gain and maybe xp after play
+    food = pet_account[22] # improves hunger and happiness gain after eating
+    brush = pet_account[23] # improves cleanliness gain after washing
+
+    pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
+    
+    return pet_object
+
+
+
 create_pet(avaiable_species)
 
