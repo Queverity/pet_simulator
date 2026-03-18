@@ -12,8 +12,87 @@ from saving_parsing import *
     # when user chooses to save their game, go through the pet_accounts, pet_inventory, and pet_skills and make sure to update the values for the changed pet
     # when user chooses to load a different game, remind them that if they don't save their current game, all progress will be lost
 
-def pet_interaction(pet_object):
-    pass
+# define function display_pets(pet_accounts):
+    # use a for loop to iterate through pet accounts and print pet name, level, species, and owner
+
+def pet_interaction(pet_object,pet_accounts):
+    pet = pet_object.name
+
+    while True:
+        print(f"Day {pet_object.day}, {pet_object.time}:00")
+
+        print(f"What would you like to do with {pet}?\n1. Examine {pet}\n2. Feed {pet}\n3. Play with {pet}\n4. Clean {pet}\n5. Train Pet\n6. Send {pet} to Bed\n7. Save Pet File\n8. Return to Main Menu\n9. Release Pet (CANNOT BE UNDONE)")
+
+        choice = input("Enter number:\n").strip()
+
+        match choice:
+            case '1':
+                pet_object.view_pet()
+                after_action()
+                continue
+            case '2':
+                pet_object.feed_pet()
+                after_action()
+                continue
+            case '3':
+                pet_object.play_with_pet()
+                after_action()
+                continue
+            case '4':
+                pet_object.clean_pet()
+                after_action()
+                continue
+            case '5':
+                pet_object.train_pet()
+                after_action()
+                continue
+            case '6':
+                pet_object.sleep_pet()
+                after_action()
+                continue
+            case '7':
+                for i in pet_accounts:
+                    if i['name'] == pet_object.name:
+                        pet_accounts.delete(i)
+                        pet_accounts.append(vars(pet_object))
+
+                save_accounts(pet_accounts)
+
+                after_action()
+                continue
+            case '8':
+                print("Reminder, all unsaved information will be lost FOREVER. Make sure you have saved.")
+
+                choice = input("Return to Main Menu Y/N:\n").strip().capitalize()
+                if choice != "Y":
+                    after_action()
+                    continue
+                else:
+                    return
+            case '9':
+                print("Are you sure you want to release this pet? This action cannot be undone; they will be lost forever.")
+
+                choice = input("Y/N:\n").strip().capitalize()
+
+                if choice != "Y":
+                    continue
+
+                else:
+                    print("Pet has been released.")
+                    remove_pet(pet_accounts,pet)
+                    return
+            case _:
+                print("Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
+                after_action()
+
+def display_pets(pet_accounts):
+    if bool(pet_accounts) == False:
+        print("There are currently no saved pets.")
+        return False
+    for i in pet_accounts:
+        print(f"{i['name']}, Level {i['level']} {i['species']} owned by {i['owner']}")
+    
+    return True
 
 def main_menu():
     pet_accounts = parse_accounts()
@@ -29,7 +108,25 @@ def main_menu():
                 pet_object = create_pet(avaiable_species)
                 pet_interaction()
             case "2":
-                # make something to read the pet_accounts file and list all of the pet names with basic details on each pet
+                has_pets = display_pets(pet_accounts)
+
+                if has_pets == False:
+                    continue
+                choice = input("Enter the name of the pet you want to select, exactly as seen in the list.").strip()
+
+                try:
+                    for i in pet_accounts:
+                        if i['name'] == choice:
+                            pet_object = load_pet(i)
+                        else:
+                            pass
+                except:
+                    print("Please enter a valid name.")
+                    after_action()
+                    continue
+                else:
+                    pet_interaction(pet_object,pet_accounts)
+                    pass
                 pass
             case "3":
                 print("Goodbye!")
