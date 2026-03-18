@@ -339,8 +339,6 @@ class Pet:
                         self.xp += 5
                         self.energy -= 10
 
-                        self.happiness = max_min_checker(self.happiness)
-                        self.energy = max_min_checker(self.energy)
                         break
                         
                     case "2":
@@ -354,8 +352,6 @@ class Pet:
                         self.money -= 10
                         self.energy -= 15
 
-                        self.happiness = max_min_checker(self.happiness)
-                        self.energy = max_min_checker(self.energy)
                         break
                         
                     case "3":
@@ -368,14 +364,21 @@ class Pet:
                         self.money -= 20
                         self.energy -= 20
 
-                        self.happiness = max_min_checker(self.happiness)
-                        self.energy = max_min_checker(self.energy)
                         break
                        
                     case _:
                         print("Please enter 1, 2, or 3.")
                         after_action()
                         continue
+
+            if self.toy > 1:
+                self.happiness += self.toy * 3
+                self.xp += self.toy * 2
+
+                print(f"Your pet gained +{self.toy * 3} Happiness from their toy upgrade.\nYour pet gained +{self.toy * 2} XP from their toy upgrade.")
+
+            self.happiness = max_min_checker(self.happiness)
+            self.energy = max_min_checker(self.energy)
             
             after_action()
 
@@ -385,17 +388,16 @@ class Pet:
             after_action()
         else:
             while True:
-                print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -10 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -15 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -20 Energy)")
+                print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -5 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -10 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -15 Energy)")
                 choice = input("Enter 1, 2, or 3:\n").strip()
 
                 match choice:
                     case "1":
                         print("You gave your pet an at-home bath.")
                         self.cleanliness += 15
-                        self.energy -= 10
+                        self.energy -= 5
 
-                        self.cleanliness = max_min_checker(self.cleanliness)
-                        self.energy = max_min_checker(self.energy)
+                        
 
                         break
                     case "2":
@@ -405,11 +407,10 @@ class Pet:
                             continue
                         print("You went to a basic groomer to get your pet trimmed and cleaned.")
                         self.cleanliness += 30
-                        self.energy -= 15
+                        self.energy -= 10
                         self.money -= 10
 
-                        self.cleanliness = max_min_checker(self.cleanliness)
-                        self.energy = max_min_checker(self.energy)
+                        
 
                         break
                     case "3":
@@ -419,17 +420,23 @@ class Pet:
                             continue
                         print("You went to a professional groomer to get your pet trimmed and cleaned.")
                         self.cleanliness = 100
-                        self.energy -= 20
+                        self.energy -= 15
                         self.money -= 20
 
-                        self.cleanliness = max_min_checker(self.cleanliness)
-                        self.energy = max_min_checker(self.energy)
+                        
 
                         break
                     case _:
                         print("Please enter 1, 2, or 3.")
                         after_action()
                         continue
+
+            if self.brush > 1:
+                self.cleanliness += self.brush * 4
+                print(f"Your pet gained +{self.brush*4} Cleanliness from their brush.")
+
+            self.cleanliness = max_min_checker(self.cleanliness)
+            self.energy = max_min_checker(self.energy)
 
             after_action()
 
@@ -481,6 +488,14 @@ class Pet:
                     self.hunger += 20
                     self.energy -= 5
                     break
+
+        if self.food > 1:
+            self.happiness += self.food * 3
+            self.hunger += self.food * 3
+            print(f"Your pet gained +{self.food * 3} Hunger from their food upgrade.\nYour pet gained +{self.food * 3} Happiness from their food upgrade.")
+
+        self.happiness = max_min_checker(self.happiness)
+        self.hunger = max_min_checker(self.hunger)
         after_action()
         return
 
@@ -570,17 +585,21 @@ class Pet:
                 case '1':
                     print(f"Owner Name: {self.owner}\nName: {self.name}\nAge (months): {self.age}\nSpecies: {self.species}")
                 case '2':
-                    pass
+                    print(f"Hunger: {self.hunger}\nHappiness: {self.happiness}\nEnergy: {self.energy}\nCleanliness: {self.cleanliness}\nHealth: {self.health}")
                 case '3':
-                    pass
+                    print(f"Money: {self.money}\nPet XP: {self.xp}\nPet Level: {self.level}")
                 case '4':
-                    pass
+                    print("Note: If a skill is Level 0, you have not yet obtained it.")
+                    print("")
                 case '5':
                     pass
                 case '6':
                     return
                 case _:
                     print("Please enter 1, 2, 3, 4, 5, or 6.")
+                    after_action()
+
+            
 
 def create_pet(avaiable_species):
     owner = input("What is your name?").strip()
@@ -612,6 +631,8 @@ def create_pet(avaiable_species):
                     after_action()
                     add_pet(pet_object)
                     return pet_object
-                
+
+def load_pet():
+    pass            
 create_pet(avaiable_species)
 
