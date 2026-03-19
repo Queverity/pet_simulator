@@ -33,6 +33,7 @@ def pet_interaction(pet_object,pet_accounts):
             case '2':
                 pet_object.feed_pet()
                 after_action()
+                pet_object.pass_time()
                 continue
             case '3':
                 pet_object.play_with_pet()
@@ -106,7 +107,7 @@ def main_menu():
         match choice:
             case "1":
                 pet_object = create_pet(avaiable_species)
-                pet_interaction()
+                pet_interaction(pet_object,pet_accounts)
             case "2":
                 has_pets = display_pets(pet_accounts)
 
@@ -116,7 +117,7 @@ def main_menu():
 
                 try:
                     for i in pet_accounts:
-                        if i['name'] == choice:
+                        if i['name'].title() == choice.title():
                             pet_object = load_pet(i)
                         else:
                             pass

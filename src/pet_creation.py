@@ -246,17 +246,16 @@ class Pet:
 
             after_action()
 
-    def pass_time(self,elapsed_time,mode):
+    def pass_time(self):
         print("Time passes...")
         
-        self.time += elapsed_time
+        self.time += 1
 
         # Hunger goes down by 5 every hour.
-        if mode == True:
-            while elapsed_time > 0:
-                print("-5 Hunger per hour")
-                hunger -= 5
-                elapsed_time -= 1
+        
+        
+        print("-5 Hunger per hour")
+        self.hunger -= 5
 
         after_action()
 
@@ -329,8 +328,8 @@ class Pet:
             return
         else:
             while True:
-                print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp, -10 Energy)\n2. Go to a fancy pet park and run around (but fancily) ($10, +20 Happiness, + 10 xp, -15 Energy)\n3. Go to like the fanciest pet park ever ($20, +25 Happiness, + 15 xp, -20 Energy)")
-                choice = input("Enter 1, 2, or 3:\n").strip()
+                print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp, -10 Energy)\n2. Go to a fancy pet park and run around (but fancily) ($10, +20 Happiness, + 10 xp, -15 Energy)\n3. Go to like the fanciest pet park ever ($20, +25 Happiness, + 15 xp, -20 Energy)\n4. Return to Pet Menu")
+                choice = input("Enter 1, 2, 3, or 4\n").strip()
 
                 match choice:
                     case "1":
@@ -365,7 +364,8 @@ class Pet:
                         self.energy -= 20
 
                         break
-                       
+                    case "4":
+                        return
                     case _:
                         print("Please enter 1, 2, or 3.")
                         after_action()
@@ -388,7 +388,7 @@ class Pet:
             after_action()
         else:
             while True:
-                print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -5 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -10 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -15 Energy)")
+                print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -5 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -10 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -15 Energy)\n4. Return to Pet Menu")
                 choice = input("Enter 1, 2, or 3:\n").strip()
 
                 match choice:
@@ -426,6 +426,8 @@ class Pet:
                         
 
                         break
+                    case "4":
+                        return
                     case _:
                         print("Please enter 1, 2, or 3.")
                         after_action()
@@ -441,9 +443,9 @@ class Pet:
             after_action()
 
     def feed_pet(self):
-        print("How would you like to feed your pet?\n1. Basic Kibble (Free, +10 Hunger, +5 Happiness, -5 Energy)\n2. Treat ($2, +15 Happiness, +5 Hunger, -5 Energy)\n3. Fancy Food ($5, +10 Happiness, +15 Hunger, -5 Energy)\n4. Home Made Meal ($10, +15 Happiness, +20 Hunger, -5 Energy)")
+        print("How would you like to feed your pet?\n1. Basic Kibble (Free, +10 Hunger, +5 Happiness, -5 Energy)\n2. Treat ($2, +15 Happiness, +5 Hunger, -5 Energy)\n3. Fancy Food ($5, +10 Happiness, +15 Hunger, -5 Energy)\n4. Home Made Meal ($10, +15 Happiness, +20 Hunger, -5 Energy)\n5. Return to Pet Menu")
         while True:
-            choice = input("Please enter 1, 2, 3, or 4:\n").strip()
+            choice = input("Please enter 1, 2, 3, 4, or 5:\n").strip()
 
         
             match choice:
@@ -488,6 +490,11 @@ class Pet:
                     self.hunger += 20
                     self.energy -= 5
                     break
+                case "5":
+                    return
+                case _:
+                    print("Please enter 1, 2, 3, 4, or 5.")
+                    continue
 
         if self.food > 1:
             self.happiness += self.food * 3
@@ -501,7 +508,7 @@ class Pet:
 
     def train_pet(self):
         while True:
-            print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}")
+            print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}\n4. Return to Pet Menu")
 
             choice = input("Enter number:\n").strip()
 
@@ -554,6 +561,8 @@ class Pet:
                         self.tracking_progress == 0
 
                     break
+                case '4':
+                    return
                 case _:
                     print("Please enter 1, 2, or 3.")
                     after_action()
@@ -659,6 +668,7 @@ def create_pet(avaiable_species):
                 food = 1 # improves hunger and happiness gain after eating
                 brush = 1 # improves cleanliness gain after washing
                 pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
+                add_pet(pet_object)
             except:
                 print("Failed to create pet object")
             else:
