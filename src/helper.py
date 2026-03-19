@@ -31,3 +31,10 @@ def max_min_checker(value):
         pass
 
     return value
+
+
+def find_dict_index(list_of_dicts, key, value):
+    for index, d in enumerate(list_of_dicts):
+        if d.get(key) == value:
+            return index  
+    return -1  

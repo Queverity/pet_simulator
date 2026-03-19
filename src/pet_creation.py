@@ -254,8 +254,9 @@ class Pet:
         # Hunger goes down by 5 every hour.
         
         
-        print("-5 Hunger per hour")
+        print("-5 Hunger per hour (Except for Feed Pet action)\n-1 Cleanliness per hour")
         self.hunger -= 5
+        self.cleanliness -= 1
 
         after_action()
 
@@ -379,6 +380,8 @@ class Pet:
 
             self.happiness = max_min_checker(self.happiness)
             self.energy = max_min_checker(self.energy)
+
+            self.pass_time()
             
             after_action()
 
@@ -439,6 +442,8 @@ class Pet:
 
             self.cleanliness = max_min_checker(self.cleanliness)
             self.energy = max_min_checker(self.energy)
+
+            self.pass_time()
 
             after_action()
 
@@ -503,6 +508,9 @@ class Pet:
 
         self.happiness = max_min_checker(self.happiness)
         self.hunger = max_min_checker(self.hunger)
+
+        self.pass_time()
+
         after_action()
         return
 
@@ -564,15 +572,17 @@ class Pet:
                 case '4':
                     return
                 case _:
-                    print("Please enter 1, 2, or 3.")
+                    print("Please enter 1, 2, 3, or 4.")
                     after_action()
                     continue
 
+        self.pass_time()
+        self.pass_time()
         after_action()
 
     def sleep_pet(self):
         if self.energy >= 25:
-            print("Your pet has too much energy to sleep!")
+            print("Your pet has too much energy to sleep! They can sleep once they have 25 Energy or less.")
             return
         print("Your pet has gone to bed.")
         self.energy = 100
@@ -679,40 +689,40 @@ def create_pet(avaiable_species):
 
 def load_pet(pet_account):
     # save file info
-    owner = pet_account[0]
-    pet = pet_account[1]
-    species = pet_account[2]
-    age = pet_account[3]
+    owner = pet_account['owner']
+    pet = pet_account['name']
+    species = pet_account['species']
+    age = int(pet_account['age'])
 
     # pet stats
-    hunger = pet_account[4]
-    happiness = pet_account[5]
-    energy = pet_account[6]
-    cleanliness = pet_account[7]
-    health = pet_account[8]
+    hunger = int(pet_account['hunger'])
+    happiness = int(pet_account['happiness'])
+    energy = int(pet_account['energy'])
+    cleanliness = int(pet_account['cleanliness'])
+    health = int(pet_account['health'])
 
     # data more prevalent to the owner
-    day = pet_account[9]
-    time = pet_account[10]
-    money = pet_account[11]
-    level = pet_account[12]
-    xp = pet_account[13]
+    day = int(pet_account['day'])
+    time = int(pet_account['time'])
+    money = int(pet_account['money'])
+    level = int(pet_account['level'])
+    xp = int(pet_account['xp'])
 
     # skills the pet can have
-    agility = pet_account[14]
-    obedience = pet_account[15]
-    tracking = pet_account[16]
+    agility = int(pet_account['agility'])
+    obedience = int(pet_account['obedience'])
+    tracking = int(pet_account['tracking'])
 
     # variables for tracking progress in training a skill
-    agility_progress = pet_account[17]
-    obedience_progress = pet_account[18]
-    tracking_progress = pet_account[19]
+    agility_progress = int(pet_account['agility_progress'])
+    obedience_progress = int(pet_account['obedience_progress'])
+    tracking_progress = int(pet_account['tracking_progress'])
 
     # inventory items that give boosts
-    bed = pet_account[20] # improves hunger decrease and happiness after sleep
-    toy = pet_account[21] # improves happiness gain and maybe xp after play
-    food = pet_account[22] # improves hunger and happiness gain after eating
-    brush = pet_account[23] # improves cleanliness gain after washing
+    bed = int(pet_account['bed']) # improves hunger decrease and happiness after sleep
+    toy = int(pet_account['toy']) # improves happiness gain and maybe xp after play
+    food = int(pet_account['food']) # improves hunger and happiness gain after eating
+    brush = int(pet_account['brush']) # improves cleanliness gain after washing
 
     pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
     

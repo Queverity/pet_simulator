@@ -25,6 +25,8 @@ def pet_interaction(pet_object,pet_accounts):
 
         choice = input("Enter number:\n").strip()
 
+        clear_screen()
+
         match choice:
             case '1':
                 pet_object.view_pet()
@@ -32,8 +34,8 @@ def pet_interaction(pet_object,pet_accounts):
                 continue
             case '2':
                 pet_object.feed_pet()
+                pet_object.hunger += 5
                 after_action()
-                pet_object.pass_time()
                 continue
             case '3':
                 pet_object.play_with_pet()
@@ -54,7 +56,8 @@ def pet_interaction(pet_object,pet_accounts):
             case '7':
                 for i in pet_accounts:
                     if i['name'] == pet_object.name:
-                        pet_accounts.delete(i)
+                        dict_index = find_dict_index(pet_accounts,'name',pet_object.name)
+                        pet_accounts.pop(dict_index)
                         pet_accounts.append(vars(pet_object))
 
                 save_accounts(pet_accounts)
@@ -104,6 +107,8 @@ def main_menu():
         print("What would you like to do?\n1. Create New Pet\n2. Load Pet\n3. Exit")
         choice = input("Enter number:\n").strip()
 
+        clear_screen()
+
         match choice:
             case "1":
                 pet_object = create_pet(avaiable_species)
@@ -115,20 +120,24 @@ def main_menu():
                     continue
                 choice = input("Enter the name of the pet you want to select, exactly as seen in the list.").strip()
 
+                pet = {}
                 try:
                     for i in pet_accounts:
                         if i['name'].title() == choice.title():
-                            pet_object = load_pet(i)
+                            print("Pet found")
+                            pet = i
+                            after_action()
                         else:
-                            pass
+                            continue
                 except:
                     print("Please enter a valid name.")
                     after_action()
                     continue
                 else:
+                    pet_object = load_pet(pet)
                     pet_interaction(pet_object,pet_accounts)
-                    pass
-                pass
+                    continue
+                
             case "3":
                 print("Goodbye!")
                 break
