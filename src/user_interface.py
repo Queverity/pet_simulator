@@ -21,7 +21,7 @@ def pet_interaction(pet_object,pet_accounts):
     while True:
         print(f"Day {pet_object.day}, {pet_object.time}:00")
 
-        print(f"What would you like to do with {pet}?\n1. Examine {pet}\n2. Feed {pet}\n3. Play with {pet}\n4. Clean {pet}\n5. Train Pet\n6. Send {pet} to Bed\n7. Save Pet File\n8. Return to Main Menu\n9. Release Pet (CANNOT BE UNDONE)")
+        print(f"What would you like to do with {pet}?\n1. Examine {pet}\n2. Feed {pet}\n3. Play with {pet}\n4. Clean {pet}\n5. Train Pet\n6. Send {pet} to Bed\n7. Save Pet File\n8. Return to Main Menu\n9. Release Pet (CANNOT BE UNDONE)\n10. Go to Pet Item Shop")
 
         choice = input("Enter number:\n").strip()
 
@@ -85,9 +85,14 @@ def pet_interaction(pet_object,pet_accounts):
                     print("Pet has been released.")
                     remove_pet(pet_accounts,pet)
                     return
+            case '10':
+                pet_object.shop()
+                continue
             case _:
                 print("Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
                 after_action()
+
+        pet_object.check_level()
 
 def display_pets(pet_accounts):
     if bool(pet_accounts) == False:
@@ -104,7 +109,7 @@ def main_menu():
     print("This is a pet simulator game! In it, you can take care of a pet by keeping track of their attributes, such as hunger, happiness, and cleanliness. Current work in progress features are a shop, skill competitions, and possibly pet breeding.")
 
     while True:
-        print("What would you like to do?\n1. Create New Pet\n2. Load Pet\n3. Exit")
+        print("What would you like to do?\n1. Create New Pet\n2. Load Pet\n3. Exit\n4. Reload Pet Accounts Data")
         choice = input("Enter number:\n").strip()
 
         clear_screen()
@@ -113,6 +118,7 @@ def main_menu():
             case "1":
                 pet_object = create_pet(avaiable_species)
                 pet_interaction(pet_object,pet_accounts)
+                pet_accounts = parse_accounts()
             case "2":
                 has_pets = display_pets(pet_accounts)
 
@@ -136,8 +142,17 @@ def main_menu():
                 else:
                     pet_object = load_pet(pet)
                     pet_interaction(pet_object,pet_accounts)
+                    pet_accounts = parse_accounts()
                     continue
                 
             case "3":
                 print("Goodbye!")
                 break
+            case "4":
+                pet_accounts = parse_accounts()
+                print("Data reloaded.")
+                after_action()
+                continue
+            case _:
+                print("Please enter 1, 2, 3, or 4.")
+                continue

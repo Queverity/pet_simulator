@@ -209,16 +209,19 @@ class Pet:
 
 
         else:
-            level = 1
+            xp = self.xp
             while True:
-                xp = self.xp
                 if xp > 100:
                     xp - 100
-                    level += 1
+                    self.level += 1
                 else:
                     break
-            
-            self.level = level
+
+            if self.level > current_level:
+                while self.level != current_level:
+                    print(f"{self.name} gained a level! They are now level {self.level}.")
+                    current_level += 1
+                    self.choose_skill    
 
     def random_event(self):
         event = random.randint(1,15)
@@ -273,10 +276,11 @@ class Pet:
         print("Welcome to the pet shop! Here, you can purchase upgrades for specific items your pet uses.")
 
         while True:
-            print(f"You can get upgrades for your pet's bed, toys, food, and brush. Available Purchases:\nTier {self.bed  + 1} Bed, ${(self.bed + 1) * 50}\nTier {self.toy + 1} Toys, ${(self.toy + 1) * 50}\nTier {self.food  + 1} Foods, ${(self.food + 1) * 50}\nTier {self.brush + 1} Brush, ${(self.brush + 1) * 30}")
+            print(f"You can get upgrades for your pet's bed, toys, food, and brush. Available Purchases:\nTier {self.bed  + 1} Bed, ${(self.bed + 1) * 50}\nTier {self.toy + 1} Toys, ${(self.toy + 1) * 50}\nTier {self.food  + 1} Foods, ${(self.food + 1) * 50}\nTier {self.brush + 1} Brush, ${(self.brush + 1) * 30}\n")
 
-            purchase = input("1. Purchase Bed\n2. Purchase Toys\n3. Purchase Foods\n4. Purchase Brush\n5. Explain Boosts\n6. Exit").strip()
+            purchase = input("1. Purchase Bed\n2. Purchase Toys\n3. Purchase Foods\n4. Purchase Brush\n5. Explain Boosts\n6. Exit\n").strip()
 
+            clear_screen()
             match purchase:
                 case "1":
                     if self.money < (self.bed + 1) * 50:
@@ -311,12 +315,14 @@ class Pet:
                     self.money -= (self.brush + 1) * 50
                     break
                 case '5':
-                    print("Beds improve hunger loss and happiness gain after sleeping. Toys improve happiness and xp gain after play. Foods improve hunger and happiness after eating. Brushes improve cleanliness gain and happiness loss after washing.")
+                    print("Beds improve hunger loss and happiness gain after sleeping.\nToys improve happiness and xp gain after play.\nFoods improve hunger and happiness after eating.\nBrushes improve cleanliness gain and happiness loss after washing.\n")
                     continue
                 case '6':
+                    clear_screen()
                     return
                 case _:
                     print("Please enter 1, 2, 3, 4, 5, or 6.")
+                    after_action()
                     continue
 
         after_action()
@@ -516,7 +522,10 @@ class Pet:
 
     def train_pet(self):
         while True:
-            print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}\n4. Return to Pet Menu")
+            if self.energy < 20:
+                print("Your pet does not have enough energy to do training! Have them sleep to reset energy.")
+                return
+            print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}\n4. General Training (Gain 30 xp)\n5. Return to Pet Menu")
 
             choice = input("Enter number:\n").strip()
 
@@ -570,6 +579,11 @@ class Pet:
 
                     break
                 case '4':
+                    print("You spent two hours training your pet. Your pet has gained +30 xp.")
+                    self.xp += 30
+                    break
+                case '5':
+                    clear_screen()
                     return
                 case _:
                     print("Please enter 1, 2, 3, or 4.")
@@ -578,12 +592,18 @@ class Pet:
 
         self.pass_time()
         self.pass_time()
+        self.energy -= 20
         after_action()
 
     def sleep_pet(self):
-        if self.energy >= 25:
-            print("Your pet has too much energy to sleep! They can sleep once they have 25 Energy or less.")
-            return
+        if self.time >= 22:
+            pass
+        else:
+            if self.energy >= 25:
+                print("Your pet has too much energy to sleep! They can sleep once they have 25 Energy or less.")
+                return
+            else:
+                pass
         print("Your pet has gone to bed.")
         self.energy = 100
         self.hunger -= (30 - self.bed * 3)
