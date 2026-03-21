@@ -143,12 +143,15 @@ class Pet:
                 match skill_choice:
                     case "1":
                         self.agility += 1
+                        print("Your pet has gained the Agility skill!")
                         break
                     case "2":
                         self.obedience += 1
+                        print("Your pet has gained the Obedience skill!")
                         break
                     case "3":
                         self.tracking += 1
+                        print("Your pet has gained the Tracking skill!")
                         break
                     case _:
                         print("Please enter 1, 2, or 3.")
@@ -156,13 +159,13 @@ class Pet:
                         continue
         else:
             while True:
-                print("Since your pet has gained a level, they can gain a new skill. Pick which skill you want your pet to gain.")
+                print("Since your pet has gained a level, they can gain a new skill. Pick which skill you want your pet to gain. If your pet already has a skill, they can't gain it twice.")
 
                 skill_choice = input("1. Agility\n2. Obedience\n3. Tracking\nEnter Number:\n").strip()
 
                 match skill_choice:
                     case "1":
-                        if self.agilty >= 1:
+                        if self.agility >= 1:
                             print("Your pet already has that skill.")
                             continue
                         else:
@@ -195,33 +198,13 @@ class Pet:
         self.age = age
 
     def check_level(self):
+        if self.xp > 100:
+            self.level += 1
+            print(f"{self.name} gained a level! They are now level {self.level}.")
+            self.choose_skill()
+            self.xp -= 100
+            return
 
-        current_level = self.level
-
-        if self.xp % 100 == 0:
-            self.level = (self.xp / 100) + 1
-            if self.level > current_level:
-                while self.level != current_level:
-                    print(f"{self.name} gained a level! They are now level {self.level}.")
-                    current_level += 1
-                    self.choose_skill
-
-
-
-        else:
-            xp = self.xp
-            while True:
-                if xp > 100:
-                    xp - 100
-                    self.level += 1
-                else:
-                    break
-
-            if self.level > current_level:
-                while self.level != current_level:
-                    print(f"{self.name} gained a level! They are now level {self.level}.")
-                    current_level += 1
-                    self.choose_skill    
 
     def random_event(self):
         event = random.randint(1,15)
@@ -629,7 +612,7 @@ class Pet:
                 case '2':
                     print(f"Hunger: {self.hunger}\nHappiness: {self.happiness}\nEnergy: {self.energy}\nCleanliness: {self.cleanliness}\nHealth: {self.health}")
                 case '3':
-                    print(f"Money: {self.money}\nPet XP: {self.xp}\nPet Level: {self.level}")
+                    print(f"Money: {self.money}\nPet XP (Progress towards next level): {self.xp}/100\nPet Level: {self.level}")
                 case '4':
                     print("Note: If a skill is Level 0, you have not yet obtained it.")
                     print(f"Agility: Level {self.agility}\nObedience: Level {self.obedience}\nTracking: Level {self.tracking}")
@@ -719,7 +702,7 @@ def load_pet(pet_account):
     happiness = int(pet_account['happiness'])
     energy = int(pet_account['energy'])
     cleanliness = int(pet_account['cleanliness'])
-    health = int(pet_account['health'])
+    health = float(pet_account['health'])
 
     # data more prevalent to the owner
     day = int(pet_account['day'])

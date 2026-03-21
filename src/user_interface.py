@@ -33,20 +33,34 @@ def pet_interaction(pet_object,pet_accounts):
                 after_action()
                 continue
             case '2':
+                if pet_object.energy < 5:
+                    print("Your pet is too tired to do anything! Have them sleep to reset energy.")
+                    continue
                 pet_object.feed_pet()
                 pet_object.hunger += 5
                 after_action()
                 continue
             case '3':
+                if pet_object.energy < 5:
+                    print("Your pet is too tired to do anything! Have them sleep to reset energy.")
+                    continue
                 pet_object.play_with_pet()
+                pet_object.check_level()
                 after_action()
                 continue
             case '4':
+                if pet_object.energy < 5:
+                    print("Your pet is too tired to do anything! Have them sleep to reset energy.")
+                    continue
                 pet_object.clean_pet()
                 after_action()
                 continue
             case '5':
+                if pet_object.energy < 5:
+                    print("Your pet is too tired to do anything! Have them sleep to reset energy.")
+                    continue
                 pet_object.train_pet()
+                pet_object.check_level()
                 after_action()
                 continue
             case '6':
@@ -61,6 +75,8 @@ def pet_interaction(pet_object,pet_accounts):
                         pet_accounts.append(vars(pet_object))
 
                 save_accounts(pet_accounts)
+
+                print("Data Saved")
 
                 after_action()
                 continue
@@ -92,7 +108,7 @@ def pet_interaction(pet_object,pet_accounts):
                 print("Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
                 after_action()
 
-        pet_object.check_level()
+        
 
 def display_pets(pet_accounts):
     if bool(pet_accounts) == False:
