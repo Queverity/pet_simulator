@@ -64,9 +64,13 @@ def pet_interaction(pet_object,pet_accounts):
                 after_action()
                 continue
             case '6':
-                pet_object.sleep_pet()
-                after_action()
-                continue
+                check_health = pet_object.sleep_pet()
+                if check_health == True:
+                    after_action()
+                    continue
+                else:
+                    remove_pet(pet_accounts,pet)
+                    return
             case '7':
                 for i in pet_accounts:
                     if i['name'] == pet_object.name:

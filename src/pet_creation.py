@@ -73,6 +73,7 @@ avaiable_species = ['Cat','Dog','Crocodile','Snek']
 
 
 class Pet:
+    # all the variables have to be able to be put in from outside (not defaults) so we can load pets from a CSV file.
     def __init__(self,owner,name,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush):
 
         # pet attributes
@@ -112,6 +113,7 @@ class Pet:
         self.brush = brush # improves cleanliness gain after washing
 
     def evaluate_health(self):
+        # Base health is an average of hunger, cleanliness, and happiness. If these stats are below a certain threshold, a certain amount of health will be removed.
         self.health = (self.hunger + self.cleanliness + self.happiness) / 3
         if self.hunger < 25:
             self.health -= 20
@@ -124,6 +126,7 @@ class Pet:
 
     def choose_skill(self):
 
+        # Used to see what pets the user can still obtain, or if they've gained all skills
         available_skills = []
 
         if self.agility == 0:
@@ -135,6 +138,7 @@ class Pet:
         if self.tracking == 0:
             available_skills.append('tracking')
 
+        # if the user has obtained all skills, allow them to gain one free level in a skill of their choice
         if bool(available_skills) == False:
             while True:
                 print("Your pet has gained all skills avaiable. Choose a skill to gain one free level in.")
@@ -143,33 +147,43 @@ class Pet:
                 match skill_choice:
                     case "1":
                         self.agility += 1
-                        print("Your pet has gained the Agility skill!")
+                        print("Your pet has gained a level in Agility.")
                         break
                     case "2":
                         self.obedience += 1
-                        print("Your pet has gained the Obedience skill!")
+                        print("Your pet has gained a level in Obedience.")
                         break
                     case "3":
                         self.tracking += 1
-                        print("Your pet has gained the Tracking skill!")
+                        print("Your pet has gained a level in Tracking.")
                         break
                     case _:
                         print("Please enter 1, 2, or 3.")
                         after_action()
                         continue
         else:
+            # If the user has not obtained all skills
             while True:
                 print("Since your pet has gained a level, they can gain a new skill. Pick which skill you want your pet to gain. If your pet already has a skill, they can't gain it twice.")
 
+                # Show the user what skills they can still grab
+                print("Available Skills")
+                for i in available_skills:
+                    print(i.capitalize())
+
+                # ask user what skill they want
                 skill_choice = input("1. Agility\n2. Obedience\n3. Tracking\nEnter Number:\n").strip()
 
+
                 match skill_choice:
+                    # First, check if the skill level is 1 or higher. If it is, then they already have the skill. Continue after that. If the skill level is 0, set the skil level to one and then break out of the loop.
                     case "1":
                         if self.agility >= 1:
                             print("Your pet already has that skill.")
                             continue
                         else:
                             self.agility = 1
+                            print("Your pet has gained the Agility skill!")
                             break
                     case "2":
                         if self.obedience >= 1:
@@ -177,6 +191,7 @@ class Pet:
                             continue
                         else:
                             self.obedience = 1
+                            print("Your pet has gained the Obedience skill!")
                             break
                     case "3":
                         if self.tracking >= 1:
@@ -184,6 +199,7 @@ class Pet:
                             continue
                         else:
                             self.tracking = 1
+                            print("Yor pet has gained the Tracking skill!")
                             break
                     case _:
                         print("Please enter 1, 2, or 3.")
@@ -191,6 +207,7 @@ class Pet:
             after_action()
 
     def evaluate_age(self):
+        # Since age is calculated in months, just find the age by dividing days by 30. Then, round the number so it isn't ugly.
         age = self.day / 30
 
         age = round(age,2)
@@ -198,6 +215,7 @@ class Pet:
         self.age = age
 
     def check_level(self):
+        # Check if the pet's xp is greater than 100 (level limit). If it is, subtract xp by 100, increment level, and run choose skill function.
         if self.xp > 100:
             self.level += 1
             print(f"{self.name} gained a level! They are now level {self.level}.")
@@ -206,7 +224,9 @@ class Pet:
             return
 
 
+
     def random_event(self):
+        # random events that have a 50% chance to be run than can change attributes of your pet. These will be run anytime time is passed.
         event = random.randint(1,15)
         if event % 2 != 0:
             pass
@@ -233,6 +253,7 @@ class Pet:
             after_action()
 
     def pass_time(self):
+        # Increment hour (time) by one, and unless the feed pet event comes before this, decrease hunger by 5. Also, decrease cleanliness by one.
         print("Time passes...")
         
         self.time += 1
@@ -249,25 +270,33 @@ class Pet:
         self.random_event()
 
     def check_time(self):
+        # Used before certain actions, just make sure the user isn't going too late in the day (and also make sure it doesn't say it is 2500 hours)
         if self.time >= 22:
             print("It's too late in the day. Have your pet go to sleep to move on to the next day.")
             return False
         else:
             return True
 
+
+
     def shop(self):
         print("Welcome to the pet shop! Here, you can purchase upgrades for specific items your pet uses.")
 
         while True:
+            # This is the pet shop, where users can get items for their pet. Price is calculated for most items by multiplying the current item tier by 50, and multiplying it by 30.
             print(f"You can get upgrades for your pet's bed, toys, food, and brush. Available Purchases:\nTier {self.bed  + 1} Bed, ${(self.bed + 1) * 50}\nTier {self.toy + 1} Toys, ${(self.toy + 1) * 50}\nTier {self.food  + 1} Foods, ${(self.food + 1) * 50}\nTier {self.brush + 1} Brush, ${(self.brush + 1) * 30}\n")
 
+            # see what the user wants to do
             purchase = input("1. Purchase Bed\n2. Purchase Toys\n3. Purchase Foods\n4. Purchase Brush\n5. Explain Boosts\n6. Exit\n").strip()
 
             clear_screen()
+
+            # First, check if user has enough money. If they don't, send them back to the shop menu. If they do, increment item tier by one, subtract money, and break loop.
             match purchase:
                 case "1":
                     if self.money < (self.bed + 1) * 50:
                         print("You don't have enough money for that.")
+                        continue
 
                     print("You have upgraded your pet's bed!")
                     self.bed += 1
@@ -276,6 +305,7 @@ class Pet:
                 case "2":
                     if self.money < (self.toy + 1) * 50:
                         print("You don't have enough money for that.")
+                        continue
 
                     print("You have upgraded your pet's toys!")
                     self.toy += 1
@@ -284,6 +314,7 @@ class Pet:
                 case '3':
                     if self.money < (self.food + 1) * 50:
                         print("You don't have enough money for that.")
+                        continue
 
                     print("You have upgraded your pet's foods!")
                     self.food += 1
@@ -292,12 +323,14 @@ class Pet:
                 case '4':
                     if self.money < (self.toy + 1) * 50:
                         print("You don't have enough money for that.")
+                        continue
 
                     print("You have upgraded your pet's brush!")
                     self.brush += 1
                     self.money -= (self.brush + 1) * 50
                     break
                 case '5':
+                    # explaining what certain items can do
                     print("Beds improve hunger loss and happiness gain after sleeping.\nToys improve happiness and xp gain after play.\nFoods improve hunger and happiness after eating.\nBrushes improve cleanliness gain and happiness loss after washing.\n")
                     continue
                 case '6':
@@ -312,11 +345,13 @@ class Pet:
         return
 
     def play_with_pet(self):
+        # make sure pet isn't out of energy
         if self.energy == 0:
             print("Your pet is out of energy! Have them sleep to reset energy.")
             after_action()
             return
         else:
+            # give options for what user can do, each giving different attributes and costing different amounts
             while True:
                 print("How would you like to play with your pet?\n1. Go to a park and run around (Free, +10 Happiness, +5 xp, -10 Energy)\n2. Go to a fancy pet park and run around (but fancily) ($10, +20 Happiness, + 10 xp, -15 Energy)\n3. Go to like the fanciest pet park ever ($20, +25 Happiness, + 15 xp, -20 Energy)\n4. Return to Pet Menu")
                 choice = input("Enter 1, 2, 3, or 4\n").strip()
@@ -357,7 +392,7 @@ class Pet:
                     case "4":
                         return
                     case _:
-                        print("Please enter 1, 2, or 3.")
+                        print("Please enter 1, 2, 3, or 4.")
                         after_action()
                         continue
 
@@ -579,6 +614,7 @@ class Pet:
         after_action()
 
     def sleep_pet(self):
+        # A few checks before the pet sleeps; First, check the time. If it is past 10:00 PM, don't check the next thing, as the user can't do anything past 10:00 PM. If it isn't past 10 PM, check pet energy. If it is above 25, the pet has too much energy to sleep. If both of these are passed, run sleep code.
         if self.time >= 22:
             pass
         else:
@@ -588,16 +624,24 @@ class Pet:
             else:
                 pass
         print("Your pet has gone to bed.")
+        # reset energy, decrease hunger, increase happiness
         self.energy = 100
         self.hunger -= (30 - self.bed * 3)
         self.happiness += (5 + self.bed * 2)
 
+        # reset time to morning, iterate day
         self.time = 8
         self.day += 1
 
+        # check health (if 0 or below, the pet ded)
         self.evaluate_health()
+        if self.health <= 0:
+            print("Bro. Your pet died in its sleep. Likely, this pet is maybe a few days old. How do you fumble that bad? Like seriously? Either way, it's getting deleted now. Sorry not sorry.")
+
+            return False
+        # user gets 50 dollars per day
         self.money += 50
-        
+        return True
         # make sure to use pass time after this
 
     def view_pet(self):
