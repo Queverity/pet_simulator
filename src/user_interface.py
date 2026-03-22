@@ -133,7 +133,7 @@ def main_menu():
         choice = input("Enter number:\n").strip()
 
         clear_screen()
-
+c
         match choice:
             case "1":
                 pet_object = create_pet(avaiable_species,pet_accounts)
