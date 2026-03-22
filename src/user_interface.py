@@ -136,7 +136,7 @@ def main_menu():
 
         match choice:
             case "1":
-                pet_object = create_pet(avaiable_species)
+                pet_object = create_pet(avaiable_species,pet_accounts)
                 pet_interaction(pet_object,pet_accounts)
                 pet_accounts = parse_accounts()
             case "2":
@@ -147,23 +147,23 @@ def main_menu():
                 choice = input("Enter the name of the pet you want to select, exactly as seen in the list.").strip()
 
                 pet = {}
-                try:
-                    for i in pet_accounts:
-                        if i['name'].title() == choice.title():
-                            print("Pet found")
-                            pet = i
-                            after_action()
-                        else:
-                            continue
-                except:
+                
+                for i in pet_accounts:
+                    if i['name'].title() == choice.title():
+                        print("Pet found")
+                        pet = i
+                        after_action()
+                        pet_object = load_pet(pet)
+                        pet_interaction(pet_object,pet_accounts)
+                        pet_accounts = parse_accounts()
+                    
+                    else:
+                        continue
+                
                     print("Please enter a valid name.")
                     after_action()
                     continue
-                else:
-                    pet_object = load_pet(pet)
-                    pet_interaction(pet_object,pet_accounts)
-                    pet_accounts = parse_accounts()
-                    continue
+        
                 
             case "3":
                 print("Goodbye!")
