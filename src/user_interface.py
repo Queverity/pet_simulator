@@ -3,6 +3,7 @@
 from pet_creation import *
 from helper import *
 from saving_parsing import *
+from competition import competition_menu
 
 
 # define function pet_interaction(pet_object):
@@ -21,7 +22,7 @@ def pet_interaction(pet_object,pet_accounts):
     while True:
         print(f"Day {pet_object.day}, {pet_object.time}:00")
 
-        print(f"What would you like to do with {pet}?\n1. Examine {pet}\n2. Feed {pet}\n3. Play with {pet}\n4. Clean {pet}\n5. Train Pet\n6. Send {pet} to Bed\n7. Save Pet File\n8. Return to Main Menu\n9. Release Pet (CANNOT BE UNDONE)\n10. Go to Pet Item Shop")
+        print(f"What would you like to do with {pet}?\n1. Examine {pet}\n2. Feed {pet}\n3. Play with {pet}\n4. Clean {pet}\n5. Train Pet\n6. Send {pet} to Bed\n7. Save Pet File\n8. Return to Main Menu\n9. Release Pet (CANNOT BE UNDONE)\n10. Go to Pet Item Shop\n11. Compete in Skills")
 
         choice = input("Enter number:\n").strip()
 
@@ -108,6 +109,9 @@ def pet_interaction(pet_object,pet_accounts):
             case '10':
                 pet_object.shop()
                 continue
+            case '11':
+                competition_menu(pet_object)
+                continue
             case _:
                 print("Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
                 after_action()
@@ -133,7 +137,7 @@ def main_menu():
         choice = input("Enter number:\n").strip()
 
         clear_screen()
-c
+
         match choice:
             case "1":
                 pet_object = create_pet(avaiable_species,pet_accounts)
