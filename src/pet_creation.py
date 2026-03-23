@@ -366,6 +366,7 @@ class Pet:
                         break
                         
                     case "2":
+                        # if option costs money, verify user has enough
                         if self.money < 10:
                             print("You don't have enough money for that.")
                             after_action()
@@ -396,12 +397,14 @@ class Pet:
                         after_action()
                         continue
 
+            # add item tier boost
             if self.toy > 1:
                 self.happiness += self.toy * 3
                 self.xp += self.toy * 2
 
                 print(f"Your pet gained +{self.toy * 3} Happiness from their toy upgrade.\nYour pet gained +{self.toy * 2} XP from their toy upgrade.")
 
+            # make sure happiness and energy aren't exceding max or min values
             self.happiness = max_min_checker(self.happiness)
             self.energy = max_min_checker(self.energy)
 
@@ -410,11 +413,13 @@ class Pet:
             after_action()
 
     def clean_pet(self):
+        # verify pet has enough energy
         if self.energy == 0:
             print("Your pet is out of energy! Have them sleep to reset energy.")
             after_action()
         else:
             while True:
+                # give user multiple options with different attributes
                 print("How would you like to clean your pet?\n1. Home Bath (Free, +15 Cleanliness, -5 Energy)\n2. Basic Groomer ($10, +30 Cleanliness, -10 Energy)\n3. Professional Groomer ($20, Cleanliness Max, -15 Energy)\n4. Return to Pet Menu")
                 choice = input("Enter 1, 2, or 3:\n").strip()
 
@@ -428,6 +433,7 @@ class Pet:
 
                         break
                     case "2":
+                        # if options costs money, verify user has enough
                         if self.money < 10:
                             print("You don't have enough money for this.")
                             after_action()
@@ -460,10 +466,12 @@ class Pet:
                         after_action()
                         continue
 
+            # give item boosts
             if self.brush > 1:
                 self.cleanliness += self.brush * 4
                 print(f"Your pet gained +{self.brush*4} Cleanliness from their brush.")
 
+            # make sure cleanliness and energy aren't exceeding max or min values
             self.cleanliness = max_min_checker(self.cleanliness)
             self.energy = max_min_checker(self.energy)
 
@@ -472,8 +480,10 @@ class Pet:
             after_action()
 
     def feed_pet(self):
-        print("How would you like to feed your pet?\n1. Basic Kibble (Free, +10 Hunger, +5 Happiness, -5 Energy)\n2. Treat ($2, +15 Happiness, +5 Hunger, -5 Energy)\n3. Fancy Food ($5, +10 Happiness, +15 Hunger, -5 Energy)\n4. Home Made Meal ($10, +15 Happiness, +20 Hunger, -5 Energy)\n5. Return to Pet Menu")
+        
         while True:
+            # give user multiple options for how to feed their pet
+            print("How would you like to feed your pet?\n1. Basic Kibble (Free, +10 Hunger, +5 Happiness, -5 Energy)\n2. Treat ($2, +15 Happiness, +5 Hunger, -5 Energy)\n3. Fancy Food ($5, +10 Happiness, +15 Hunger, -5 Energy)\n4. Home Made Meal ($10, +15 Happiness, +20 Hunger, -5 Energy)\n5. Return to Pet Menu")
             choice = input("Please enter 1, 2, 3, 4, or 5:\n").strip()
 
         
@@ -485,6 +495,7 @@ class Pet:
                     self.energy -= 5
                     break
                 case "2":
+                    # if option costs money, verify user has enough
                     if self.money < 2:
                         print("You don't have enough money for that.")
                         after_action()
@@ -525,13 +536,16 @@ class Pet:
                     print("Please enter 1, 2, 3, 4, or 5.")
                     continue
 
+        # add item boosts
         if self.food > 1:
             self.happiness += self.food * 3
             self.hunger += self.food * 3
             print(f"Your pet gained +{self.food * 3} Hunger from their food upgrade.\nYour pet gained +{self.food * 3} Happiness from their food upgrade.")
 
+        # verify happiness, hunger, and energy aren't exceeding max or min values
         self.happiness = max_min_checker(self.happiness)
         self.hunger = max_min_checker(self.hunger)
+        self.energy = max_min_checker(self.energy)
 
         self.pass_time()
 
@@ -540,14 +554,17 @@ class Pet:
 
     def train_pet(self):
         while True:
+            # make sure pet has enough energy
             if self.energy < 20:
                 print("Your pet does not have enough energy to do training! Have them sleep to reset energy.")
                 return
+            # give user options of how to train pet
             print(f"What skill would would you like to train?\nNote: If a skill is Level 0, your pet has not obtained it yet, and it cannot be trained.\nNote Two: Training your pet takes two hours and twenty energy.\n1. Agility, Level {self.agility}\n2. Obedience, Level {self.obedience}\n3. Tracking, Level {self.tracking}\n4. General Training (Gain 30 xp)\n5. Return to Pet Menu")
 
             choice = input("Enter number:\n").strip()
 
             match choice:
+                # first, verify pet actually has skill. If they do, add one to training progress. if training progress is equal to three, add 1 level to the skill and reset training progress.
                 case '1':
                     if self.agility == 0:
                         print("You have not yet obtained that skill.")
@@ -604,7 +621,7 @@ class Pet:
                     clear_screen()
                     return
                 case _:
-                    print("Please enter 1, 2, 3, or 4.")
+                    print("Please enter 1, 2, 3, 4, or 5.")
                     after_action()
                     continue
 
@@ -646,6 +663,7 @@ class Pet:
 
     def view_pet(self):
         while True:
+            # give user different options on how to view pet
             print("What information about your pet would you like to view?\n1. Basic Info (Name, Age, Species)\n2. Attributes\n3. Save File Attribtues\n4. Skills\n5. Inventory\n6. Exit")
 
             choice = input("Enter number:\n").strip()
@@ -679,20 +697,26 @@ class Pet:
             
 
 def create_pet(avaiable_species,pet_accounts):
+    # owner name, not technically neccesary
     owner = input("What is your name?").strip()
     
 
+    # loop used for stupid proofing
     while True:
+        # get name of pet
         pet = input("What is the name of your pet?").strip()
 
+        # show what species user can make their pet
         print("Avaiable Species")
         for i in avaiable_species:
             print(i)
+        # take in user input for species, then validate it is an accepted species
         species = input("What species is your pet?").strip().capitalize()
         if species not in avaiable_species:
             print("Please enter a valid answer.")
             continue_screen()
         else:   
+            # create pet object, have all defualt values preset
             try:
                 # pet age, because setting day equal to age and figuring that out sounds annoying
                 age = 0
@@ -728,7 +752,9 @@ def create_pet(avaiable_species,pet_accounts):
                 pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
             except:
                 print("Failed to create pet object")
+                return
             else:
+                # if pet is created succesfully, tell user that, than run game
                 print("Pet created succesfully!")
                 after_action()
                 add_pet(pet_object)
@@ -736,6 +762,8 @@ def create_pet(avaiable_species,pet_accounts):
                 return pet_object
 
 def load_pet(pet_account):
+    # set all values to something in the csv
+    
     # save file info
     owner = pet_account['owner']
     pet = pet_account['name']
