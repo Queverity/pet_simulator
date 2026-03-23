@@ -113,7 +113,7 @@ def pet_interaction(pet_object,pet_accounts):
                 competition_menu(pet_object)
                 continue
             case _:
-                print("Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
+                print("Please enter 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, or 11.")
                 after_action()
 
         
