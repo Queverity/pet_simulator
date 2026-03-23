@@ -688,52 +688,52 @@ def create_pet(avaiable_species,pet_accounts):
         print("Avaiable Species")
         for i in avaiable_species:
             print(i)
-            species = input("What species is your pet?").strip().capitalize()
-            if species not in avaiable_species:
-                print("Please enter a valid answer.")
-                continue_screen()
-            else:   
-                try:
-                    # pet age, because setting day equal to age and figuring that out sounds annoying
-                    age = 0
-                    # pet stats
-                    hunger = 80
-                    happiness = 80
-                    energy = 80
-                    cleanliness = 80
-                    health = 100
+        species = input("What species is your pet?").strip().capitalize()
+        if species not in avaiable_species:
+            print("Please enter a valid answer.")
+            continue_screen()
+        else:   
+            try:
+                # pet age, because setting day equal to age and figuring that out sounds annoying
+                age = 0
+                # pet stats
+                hunger = 80
+                happiness = 80
+                energy = 80
+                cleanliness = 80
+                health = 100
 
-                    # data more prevalent to the owner
-                    day = 1
-                    time = 8
-                    money = 500
-                    level = 1
-                    xp = 0
+                # data more prevalent to the owner
+                day = 1
+                time = 8
+                money = 500
+                level = 1
+                xp = 0
 
-                    # skills the pet can have
-                    agility = 0
-                    obedience = 0
-                    tracking = 0
+                # skills the pet can have
+                agility = 0
+                obedience = 0
+                tracking = 0
 
-                    # variables for tracking progress in training a skill
-                    agility_progress = 0
-                    obedience_progress = 0
-                    tracking_progress = 0
+                # variables for tracking progress in training a skill
+                agility_progress = 0
+                obedience_progress = 0
+                tracking_progress = 0
 
-                    # inventory items that give boosts
-                    bed = 1 # improves hunger decrease and happiness after sleep
-                    toy = 1 # improves happiness gain and maybe xp after play
-                    food = 1 # improves hunger and happiness gain after eating
-                    brush = 1 # improves cleanliness gain after washing
-                    pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
-                    add_pet(pet_object)
-                except:
-                    print("Failed to create pet object")
-                else:
-                    print("Pet created succesfully!")
-                    after_action()
-                    add_pet(pet_object)
-                    return pet_object
+                # inventory items that give boosts
+                bed = 1 # improves hunger decrease and happiness after sleep
+                toy = 1 # improves happiness gain and maybe xp after play
+                food = 1 # improves hunger and happiness gain after eating
+                brush = 1 # improves cleanliness gain after washing
+                pet_object = Pet(owner,pet,species,age,hunger,happiness,energy,cleanliness,health,day,time,money,level,xp,agility,obedience,tracking,agility_progress,obedience_progress,tracking_progress,bed,toy,food,brush)
+            except:
+                print("Failed to create pet object")
+            else:
+                print("Pet created succesfully!")
+                after_action()
+                add_pet(pet_object)
+                pet_accounts.append(vars(pet_object))
+                return pet_object
 
 def load_pet(pet_account):
     # save file info
