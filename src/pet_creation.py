@@ -548,6 +548,8 @@ class Pet:
         self.energy = max_min_checker(self.energy)
 
         self.pass_time()
+        # done to have pet not lose hunger right after eating
+        hunger += 5
 
         after_action()
         return
